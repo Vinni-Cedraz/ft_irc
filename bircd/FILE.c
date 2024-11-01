@@ -1,4 +1,3 @@
-
 #include "bircd.h"
 
 void	check_fd(t_env *e)
@@ -30,6 +29,7 @@ void	clean_fd(t_fd *fd)
 
 #include "bircd.h"
 #include <stdio.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -47,11 +47,16 @@ void	client_read(t_env *e, int cs)
 	}
 	else
 	{
+		e->fds[cs].buf_read[r] = '\0'; // Null-terminate the received string
+		printf("buf read: %s\n", e->fds[cs].buf_read); //
 		i = 0;
 		while (i < e->maxfd)
 		{
 			if ((e->fds[i].type == FD_CLIENT) && (i != cs))
-				send(i, e->fds[cs].buf_read, r, 0);
+			{
+				strncpy(e->fds[i].buf_write, e->fds[cs].buf_read, BUF_SIZE);
+				e->fds[i].buf_write[BUF_SIZE] = '\0'; // Ensure null-termination
+			}
 			i++;
 		}
 	}
