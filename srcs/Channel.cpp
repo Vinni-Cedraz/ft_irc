@@ -89,7 +89,7 @@ bool Channel::checkChannelModes(char mode) const {
 		case 'k':
 			return _hasKey;
 		case 'l':
-			return _userLimit;
+			return _userLimit.limited;
 		default:
 			errorln("Not a valid channel mode.");
 			return false;
@@ -130,6 +130,9 @@ bool Channel::kickMember(Client* operator_client, Client* target, const std::str
 	return false;
 }
 
+// need to check if this function make sense to be here or if 
+// we will need to implement a class operator to have this kind
+// of function as its methods
 bool Channel::inviteMember(Client* operator_client, Client* target) {
 	if (!operator_client) {
 		errorln("Invalid operator.");
@@ -143,10 +146,12 @@ bool Channel::inviteMember(Client* operator_client, Client* target) {
 	else if (_members.find(target->get_fd()) != _members.end()) {
 		errorln(target->get_username() << " is already a member of '" << _name << "'.");
 	}
-	else {
-		_members.insert(std::pair<int, Client*>(target->get_fd(), target));
-		return true;
-	}
+	//this is wrong:
+	// else {
+	// 	_members.insert(std::pair<int, Client*>(target->get_fd(), target));
+	// 	return true;
+		server.send(member being invited ,RPL_INVITING (341)); 
+	// }
 
 	return false;
 }
@@ -175,4 +180,12 @@ bool Channel::parseChannelName(const std::string &name) const
 	if (name.empty() || (name[0] != '#' && name[0] != '&') || pos != std::string::npos)
 		return false;
 	return true;
+};
+
+size_t Channel::getCurrentMembersCount() const {
+	return _members.size();
+}
+
+bool Channel::getUserLimit() const {
+	return _userLimit.limit;
 };

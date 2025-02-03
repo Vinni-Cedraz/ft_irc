@@ -16,7 +16,7 @@ class Server {
   std::string _pass;
   fd_set _master_set;
   int _max_fd;
-  std::map<std::string, Channel*> _channels;
+  std::map<const std::string, Channel*> _channels;
   ClientMap _clients;
   MessageQueueMap _message_queues;
   struct sockaddr_in _server_addr;
@@ -42,6 +42,7 @@ class Server {
   void send_message(int client_fd, const std::string& message);
   void error(int fd, const std::string& msg);
   void addNewChannel(Channel* new_channel);
+  bool checkForChannel(const std::string& channel_name);
 
   // Manager classes:
   friend class SocketsManager;

@@ -12,6 +12,11 @@
 
 class Server;
 
+struct UserLimit {
+	bool limited = false;
+	size_t limit;
+};
+
 class Channel {
 	
 	private:
@@ -26,7 +31,7 @@ class Channel {
 		bool _inviteOnly;      // mode +i
 		bool _topicRestricted; // mode +t
 		bool _hasKey;          // mode +k
-		size_t _userLimit;     // mode +l
+		UserLimit _userLimit;     // mode +l
 
 	public:	
 
@@ -54,7 +59,9 @@ class Channel {
 		const std::string& getName() const;
 		const std::string& getTopic() const;
 		const std::map<int, Client*>& getMembers() const;
-			
+		size_t getCurrentMembersCount() const;
+		bool getUserLimit() const;
+					
 		// Required by subject
 		bool kickMember(Client* operator_client, Client* target, const std::string& reason);
 		bool inviteMember(Client* operator_client, Client* target);

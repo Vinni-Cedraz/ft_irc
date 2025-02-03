@@ -14,8 +14,8 @@ void CommandsManager::execute(Commands &commands) {
             case PRIVMSG:
                 // privmsg(commands, cmd);
                 break;
-				case JOIN:
-					// join(commands, cmd);
+            case JOIN:
+                // join(commands, cmd);
                 break;
             case NICK:
                 nick(commands, cmd);
@@ -28,6 +28,18 @@ void CommandsManager::execute(Commands &commands) {
                 break;
             case PASS:
                 pass(commands, cmd);
+                break;
+            case KICK:
+                // kick();
+                break;
+            case INVITE:
+                // invite();
+                break;
+            case TOPIC:
+                // topic();
+                break;
+            case MODE:
+                // mode();
                 break;
             default:
                 break;
@@ -84,6 +96,40 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
     send_welcome_messages(client);
 }
 
+void CommandsManager::join(Commands &commands, const Command &cmd) {
+    Channel* channel;
+    
+    if (!server.checkForChannel(cmd.parameters[0])) {
+        server.addNewChannel(new Channel(cmd.parameters[0], commands.get_sender()));
+        // verify channel setting:
+    } else {
+        channel = server._channels[cmd.parameters[0]];
+    }
+    if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
+        
+    }
+
+    if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
+        channel->addMember(&commands.get_sender());     
+    } else {
+        server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
+    } 
+    if (channel->checkChannelModes('i')) {
+
+    } else {
+
+    }
+
+    } else if (nbr of params) {
+        
+    } else if (if the channel has key, does the matches the channel key?) {
+        
+    }
+    else {
+        server._channels[cmd.parameters[0]]->addMember(&commands.get_sender());
+    }
+};
+
 // void CommandsManager::quit(Commands &commands, const Command &cmd) {
 //     // Implementation of QUIT command
 // }
@@ -103,6 +149,23 @@ void CommandsManager::pass(Commands &commands, const Command &cmd) {
         client.set_authentication(true);
         send_welcome_messages(client);
     }
+}
+
+
+// TO DO
+
+//If <target> is a channel that does not exist on the network, 
+void CommandsManager::mode(Commands &commands, const Command &cmd) {
+    Client &client = commands.get_sender();
+    Server* server = client.getServer();
+    
+    if (!server->checkForChannel(cmd.parameters[1])) {
+        server->send_message(client.get_fd(), ERR_NOSUCHCHANNEL(cmd.parameters[1]));
+    }
+    if (!server->_channels[cmd.parameters[1]]->isOperator(&client)) {
+        server->send_message(client.get_fd(), ERR_CHANOPRIVSNEEDED(client.get_nickname(), cmd.parameters[1]));
+    }
+
 }
 
 void CommandsManager::broadcast_message(const std::string &msg, int sender_fd) {

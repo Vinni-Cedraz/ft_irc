@@ -129,7 +129,16 @@ void Server::set_pass(const std::string& pass){
 }
 
 void Server::addNewChannel(Channel* new_channel){
-    _channels.insert(std::pair<std::string, Channel*>(new_channel->getName(), new_channel));
+    _channels.insert(std::pair<const std::string, Channel*>(new_channel->getName(), new_channel));
+};
+
+bool Server::checkForChannel(const std::string& channel_name) {
+  std::map<const std::string, Channel*>::iterator it = _channels.find(channel_name);
+  
+  if (it != _channels.end()) 
+    return true;
+  
+  return false;
 };
 
 // void Server::stop() {}
