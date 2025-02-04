@@ -133,7 +133,9 @@ bool Channel::kickMember(Client* operator_client, Client* target, const std::str
 // need to check if this function make sense to be here or if 
 // we will need to implement a class operator to have this kind
 // of function as its methods
-bool Channel::inviteMember(Client* operator_client, Client* target) {
+bool Channel::inviteMember(Client* operator_client, Client* target, Channel* channel) {
+	if ()
+	
 	if (!operator_client) {
 		errorln("Invalid operator.");
 	}

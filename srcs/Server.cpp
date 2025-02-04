@@ -105,10 +105,10 @@ Server::~Server() {
   close(_fd);
 }
 
-void Server::send_error(int client_fd, const std::string &error_code, const std::string &error_message) {
-  std::string message = ":" + to_string(client_fd) + " " + error_code + " " + error_message + "\r\n";
-  send_message(client_fd, message);
-}
+// void Server::send_error(int client_fd, const std::string &error_code, const std::string &error_message) {
+//   std::string message = ":" + to_string(client_fd) + " " + error_code + " " + error_message + "\r\n";
+//   send_message(client_fd, message);
+// }
 
 void Server::send_message(int client_fd, const std::string &message) {
   if (send(client_fd, message.c_str(), message.length(), 0) == -1) {
