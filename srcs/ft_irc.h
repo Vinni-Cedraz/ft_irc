@@ -187,6 +187,10 @@ inline std::string RPL_YOURHOST(const std::string& user) {
   return SERVER + " 002 " + user + " :Your host is " + SERVER + ", running version 1.0" + CRLF;
 }
 
+inline std::string INVITE(const std::string& issuer_nick, const std::string& issuer_username, const std::string& target, const std::string& channel) {
+  return SERVER + ":" + issuer_nick + "!" + issuer_username + "@ft.irc INVITE " + target + " " + channel + CRLF;
+}
+
 #include <ctime>
 
 inline std::string getCurrentDate() {

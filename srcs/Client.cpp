@@ -33,6 +33,35 @@ bool Client::read_into_buffer() {
   return true;
 }
 
+bool Client::inviteMember(Client* target, Channel* channel) {
+  if (!target || _server->_clients.find(target->get_fd()) == _server->_clients.end()) {
+    errorln("The target doesn't belong to this server.");
+    return false; 
+  }  
+  if (!_server->checkForChannel(channel->getName())) {
+    _server->send_message(this->_fd, ERR_NOSUCHCHANNEL(channel->getName()));
+    return false;
+  }
+  if (channel->_members.find(target->get_fd()) != channel->_members.end()) {
+    _server->send_message(this->_fd, ERR_USERONCHANNEL(target->get_nickname(), channel->getName()));
+    return false;
+  }
+  if (channel->checkChannelModes('i')) {
+    if (!channel->isOperator(this)) {
+      _server->send_message(this->_fd, ERR_CHANOPRIVSNEEDED(this->_nick, channel->getName()));
+      return false;
+    }
+  } else {
+    if (!channel->isMember(this)) {
+      _server->send_message(this->_fd, ERR_NOTONCHANNEL(channel->getName()));
+      return false;
+    }
+  }
+  _server->send_message(this->_fd ,RPL_INVITING(this->_nick, target->get_nickname(), channel->getName())); 
+  _server->send_message(target->get_fd(), INVITE(this->_nick, this->_user, target->get_nickname(), channel->getName()));
+	return true;
+}
+
 int Client::get_fd() const { return _fd; }
 
 const std::string &Client::get_nickname() const { return _nick; }

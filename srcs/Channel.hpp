@@ -24,7 +24,6 @@ class Channel {
 		std::string         _name;          // Channel name (starts with # or &)
 		std::string         _topic;         // Channel topic
 		std::string         _key;           // Channel password (if mode +k is set)
-		std::map<int, Client*> _members;    // Channel members (fd -> Client*)
 		std::map<int, Client*> _operators;  // Channel operators (fd -> Client*)
 		
 		// Channel modes
@@ -38,6 +37,8 @@ class Channel {
 		Channel(const std::string& name, Client* creator);
 		~Channel();
 
+		std::map<int, Client*> _members;    // Channel members (fd -> Client*)
+		
 		// Basic operations
 		bool addMember(Client* client);
 		bool removeMember(Client* client);
@@ -46,13 +47,14 @@ class Channel {
 		// Channel operator operations
 		void setOperator(Client* client);
 		bool isOperator(Client* client) const;
+		bool isMember(Client* client) const;
 		
 		// Mode operations
 		//if only operators are able to set modes, a setter function to do it
 		// is not necessary, checkMode though, is necessary, because other entities
 		// outside the Channel class may neeed to access this information   
 		// void setMode(char mode, bool status);
-		bool checkChannelModes(char mode) const;
+		bool checkChannelModes(const char mode) const;
 		bool checkUserModes(char mode, Client* client);
 		
 		// Getters
@@ -64,7 +66,7 @@ class Channel {
 					
 		// Required by subject
 		bool kickMember(Client* operator_client, Client* target, const std::string& reason);
-		bool inviteMember(Client* operator_client, Client* target);
+		bool inviteMember(Client* operator_client, Client* target, Channel* channel);
 		bool setTopic(Client* client, const std::string& new_topic);
 
 		//validation

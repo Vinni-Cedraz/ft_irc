@@ -29,6 +29,8 @@ class Client {
     bool buffer_has_linebreak();
     bool read_into_buffer();
 
+    bool inviteMember(Client* target, Channel* channel);
+
     // getters:
     int get_fd() const;
 	const std::string &get_pass() const;

@@ -17,7 +17,6 @@ class Server {
   fd_set _master_set;
   int _max_fd;
   std::map<const std::string, Channel*> _channels;
-  ClientMap _clients;
   MessageQueueMap _message_queues;
   struct sockaddr_in _server_addr;
   static void signal_handler(int signum);
@@ -29,6 +28,7 @@ class Server {
   void handle_client_message(int client_fd);
 
  public:
+  ClientMap _clients;
   Server(int port, const std::string& pass);
   ~Server();
   static volatile __sig_atomic_t terminate;

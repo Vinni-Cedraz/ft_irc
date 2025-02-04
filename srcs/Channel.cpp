@@ -80,7 +80,14 @@ bool Channel::isOperator(Client* client) const {
 	return false;
 }
 
-bool Channel::checkChannelModes(char mode) const {
+bool Channel::isMember(Client* client) const {
+	if (client && _members.find(client->get_fd()) != _members.end())
+		return true;
+	return false;
+};
+
+
+bool Channel::checkChannelModes(const char mode) const {
 	switch (tolower(mode)) {
 		case 'i':
 			return _inviteOnly;
@@ -130,33 +137,6 @@ bool Channel::kickMember(Client* operator_client, Client* target, const std::str
 	return false;
 }
 
-// need to check if this function make sense to be here or if 
-// we will need to implement a class operator to have this kind
-// of function as its methods
-bool Channel::inviteMember(Client* operator_client, Client* target, Channel* channel) {
-	if ()
-	
-	if (!operator_client) {
-		errorln("Invalid operator.");
-	}
-	else if (!target) {
-		errorln("Invalid target.");
-	}
-	else if (!isOperator(operator_client)) {
-		errorln("Unable invite members: you do not have operator privileges.");
-	}
-	else if (_members.find(target->get_fd()) != _members.end()) {
-		errorln(target->get_username() << " is already a member of '" << _name << "'.");
-	}
-	//this is wrong:
-	// else {
-	// 	_members.insert(std::pair<int, Client*>(target->get_fd(), target));
-	// 	return true;
-		server.send(member being invited ,RPL_INVITING (341)); 
-	// }
-
-	return false;
-}
 
 bool Channel::setTopic(Client* operator_client, const std::string& new_topic) {
 	if (!operator_client) {
