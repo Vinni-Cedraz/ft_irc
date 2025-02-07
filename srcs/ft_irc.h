@@ -137,10 +137,6 @@ inline std::string ERR_CHANOPRIVSNEEDED(const std::string& user, const std::stri
 
 inline std::string ERROR(const std::string message) { return ":ERROR " + message + CRLF; }
 
-inline std::string RPL_JOIN(const std::string& user, const std::string& channel) {
-  return SERVER + user + " JOIN " + channel + CRLF;
-}
-
 inline std::string PRIVMSG_BROADCAST(const std::string& nick, const std::string& user, const std::string& channel,
                                      const std::string& topic) {
   return SERVER + nick + "!~" + user + "@ft.irc TOPIC " + channel + " " + topic + CRLF;
@@ -189,6 +185,10 @@ inline std::string RPL_YOURHOST(const std::string& user) {
 
 inline std::string INVITE(const std::string& issuer_nick, const std::string& issuer_username, const std::string& target, const std::string& channel) {
   return SERVER + ":" + issuer_nick + "!" + issuer_username + "@ft.irc INVITE " + target + " " + channel + CRLF;
+}
+
+inline std::string JOIN(const std::string& user, const std::string& channel) {
+  return SERVER + user + " is joining the channel " + channel + CRLF;
 }
 
 #include <ctime>

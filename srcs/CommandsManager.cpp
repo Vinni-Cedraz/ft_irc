@@ -115,14 +115,31 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
         channel->addMember(&commands.get_sender());     
     } else {
         server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
-    } 
+    }
+
     if (channel->checkChannelModes('i')) {
         if (check_invite(sender, channel)) {
+            
+            // A JOIN message with the client as the message <source>
+            // and the channel they have joined as the first parameter of the message.
+            // (DO WE NEED A MSG QUEUE?)
+
+            
+            // The channel’s topic (with RPL_TOPIC (332) and optionally RPL_TOPICWHOTIME (333)),
+            // and no message if the channel does not have a topic.
+            if (!cmd.parameters[0]._topic.empty()) {
+                // RPL_TOPIC (332);
+            }
+                        
+            // A list of users currently joined to the channel (with one or more RPL_NAMREPLY (353)
+            // numerics followed by a single RPL_ENDOFNAMES (366) numeric). These RPL_NAMREPLY
+            // messages sent by the server MUST include the requesting client that has just joined the channel.
+            for (channel._members::iterator....) {
+                // RPL_NAMREPLY (353);
+                // RPL_ENDOFNAMES (366);
+            }
 
         }
-    } else {
-
-
     } else if (nbr of params) {
         
     } else if (if the channel has key, does the matches the channel key?) {
