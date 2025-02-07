@@ -98,6 +98,7 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
 
 void CommandsManager::join(Commands &commands, const Command &cmd) {
     Channel* channel;
+    Client sender = commands.get_sender();
     
     if (!server.checkForChannel(cmd.parameters[0])) {
         server.addNewChannel(new Channel(cmd.parameters[0], commands.get_sender()));
@@ -105,9 +106,10 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
     } else {
         channel = server._channels[cmd.parameters[0]];
     }
-    if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
+    //need to transfer this to the MODe function
+    // if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
         
-    }
+    // }
 
     if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
         channel->addMember(&commands.get_sender());     
@@ -115,10 +117,11 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
         server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
     } 
     if (channel->checkChannelModes('i')) {
+        if (check_invite(sender, channel)) {
 
+        }
     } else {
 
-    }
 
     } else if (nbr of params) {
         
@@ -209,3 +212,16 @@ bool CommandsManager::is_nickname_in_use(const std::string &new_nick) {
     }
     return false;
 }
+
+bool CommandsManager::check_invite(Client& client, Channel* channel) {
+    for (std::vector<Invites>::iterator it = client.invites.begin(); it != client.invites.end(); it++) {
+        if (it->channel.getName() == channel->getName()) {
+            if (channel->isOperator(&it->who_invited)) {
+                return true;
+            }
+        }
+    }
+    server.send_message(client.get_fd() , ERR_CHANOPRIVSNEEDED(client.get_nickname(), channel->getName()));
+    return false;
+};
+

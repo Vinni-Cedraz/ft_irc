@@ -8,6 +8,12 @@
 
 class Server;
 
+struct Invites
+{
+    Client& who_invited;
+    Channel& channel;
+};
+
 class Client {
   private:
     int _fd;
@@ -24,6 +30,8 @@ class Client {
   public:
     Client(int fd,  Server* server);
     ~Client();
+
+    std::vector<Invites> invites;
 
     void clean_buffer();
     bool buffer_has_linebreak();

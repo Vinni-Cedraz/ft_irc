@@ -24,4 +24,5 @@ class CommandsManager {
   void update_user_info(Client &client, const std::string &username, const std::string &realname);
   void update_nickname(Client &client, const std::string &new_nick);
   bool is_nickname_in_use(const std::string &new_nick);
+  bool check_invite(Client& client, Channel* channel_name);
 };

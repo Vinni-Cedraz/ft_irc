@@ -84,8 +84,7 @@ bool Channel::isMember(Client* client) const {
 	if (client && _members.find(client->get_fd()) != _members.end())
 		return true;
 	return false;
-};
-
+}
 
 bool Channel::checkChannelModes(const char mode) const {
 	switch (tolower(mode)) {
