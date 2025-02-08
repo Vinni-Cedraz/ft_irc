@@ -4,6 +4,13 @@
 #include "ft_irc.h"
 #include <iostream>
 
+CmdFunc CommandsManager::command_handlers[UNKNOWN + 1] = {
+  &CommandsManager::privmsg, &CommandsManager::join, &CommandsManager::nick,
+  &CommandsManager::user, &CommandsManager::quit, &CommandsManager::kick,
+  &CommandsManager::pass, &CommandsManager::invite, &CommandsManager::topic,
+  &CommandsManager::mode, &CommandsManager::unknown
+};
+
 CommandsManager::CommandsManager(Server &server) : server(server) {}
 
 bool CommandsManager::requiresRegistration(CommandType type) {
@@ -21,55 +28,23 @@ bool CommandsManager::requiresRegistration(CommandType type) {
     }
 }
 
+bool not_fully_registered(Client &sender) {
+    return (!sender.is_authenticated() || sender.get_nickname().empty() || sender.get_username().empty());
+}
+
 void CommandsManager::execute(Commands &commands) {
-    Client &sender = commands.get_sender();
-    const std::list<Command>& cmd_list = commands.get_list();
+  Client &sender = commands.get_sender();
+  const std::list<Command> &cmd_list = commands.get_list();
 
-    for (std::list<Command>::const_iterator it = cmd_list.begin(); it != cmd_list.end(); ++it) {
-        const Command &cmd = *it;
-        if (requiresRegistration(cmd.type) &&
-            (!sender.is_authenticated() || sender.get_nickname().empty() || sender.get_username().empty())) {
-            server.send_message(sender.get_fd(), ERR_NOTREGISTERED());
-            continue;
-        }
-
-        switch (cmd.type) {
-            case PRIVMSG:
-                privmsg(commands, cmd);
-                break;
-            case JOIN:
-                join(commands, cmd);
-                break;
-            case NICK:
-                nick(commands, cmd);
-                break;
-            case USER:
-                user(commands, cmd);
-                break;
-            case QUIT:
-                // quit(commands, cmd);
-                break;
-            case KICK:
-                // kick(commands, cmd);
-                break ;
-            case PASS:
-                pass(commands, cmd);
-                break;
-            case INVITE:
-                // invite();
-                break;
-            case TOPIC:
-                // topic();
-                break;
-            case MODE:
-                mode(commands, cmd);
-                break;
-            default:
-                break;
-        }
+  for (std::list<Command>::const_iterator it = cmd_list.begin(); it != cmd_list.end(); ++it) {
+    const Command &cmd = *it;
+    if (requiresRegistration(cmd.type) && not_fully_registered(sender)) {
+      server.send_message(sender.get_fd(), ERR_NOTREGISTERED());
+      continue;
     }
-    // Clear the list after execution
-    commands.clear();
+    (this->*(command_handlers[cmd.type]))(commands, cmd);
+  }
+  commands.clear();
 }
 
 void CommandsManager::privmsg(Commands &commands, const Command &cmd) {
@@ -232,39 +207,30 @@ void CommandsManager::mode(Commands &commands, const Command &cmd) {
     server.send_message(client.get_fd(), RPL_MODEBASE(client.get_nickname(), client.get_username(), cmd.parameters[0]));
 }
 
-// void CommandsManager::join(Commands &commands, const Command &cmd) {
-//     Channel* channel;
-    
-//     if (!server.checkForChannel(cmd.parameters[0])) {
-//         server.addNewChannel(new Channel(cmd.parameters[0], &commands.get_sender()));
-//         // verify channel setting:
-//     } else {
-//         channel = server._channels[cmd.parameters[0]];
-//     }
-//     if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
-        
-//     }
+void CommandsManager::quit(Commands &commands, const Command &cmd) {
+    (void)commands;
+    (void)cmd;
+}
 
-//     if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
-//         channel->addMember(&commands.get_sender());     
-//     } else {
-//         server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
-//     } 
-//     if (channel->checkChannelModes('i')) {
+void CommandsManager::kick(Commands &commands, const Command &cmd) {
+    (void)commands;
+    (void)cmd;
+}
 
-//     } else if ("nbr of params") {
-        
-//     } else if ("if the channel has key, does the matches the channel key?") {
-        
-//     }
-//     else {
-//         server._channels[cmd.parameters[0]]->addMember(&commands.get_sender());
-//     }
-// };
+void CommandsManager::invite(Commands &commands, const Command &cmd) {
+    (void)commands;
+    (void)cmd;
+}
 
-// void CommandsManager::quit(Commands &commands, const Command &cmd) {
-//     // Implementation of QUIT command
-// }
+void CommandsManager::topic(Commands &commands, const Command &cmd) {
+    (void)commands;
+    (void)cmd;
+}
+
+void CommandsManager::unknown(Commands &commands, const Command &cmd) {
+    (void)commands;
+    (void)cmd;
+}
 
 void CommandsManager::pass(Commands &commands, const Command &cmd) {
     Client &client = commands.get_sender();

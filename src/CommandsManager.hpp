@@ -2,6 +2,10 @@
 #include "Commands.hpp"
 #include "Server.hpp"
 
+class  CommandsManager;
+
+typedef void (CommandsManager::*CmdFunc)(Commands&, const Command&);
+
 class CommandsManager {
  public:
   CommandsManager(Server &server);
@@ -9,15 +13,19 @@ class CommandsManager {
 
  private:
   Server &server;
+  static CmdFunc command_handlers[UNKNOWN + 1];
 
   void privmsg(Commands &commands, const Command &cmd);
   void join(Commands &commands, const Command &cmd);
   void nick(Commands &commands, const Command &cmd);
   void user(Commands &commands, const Command &cmd);
-  // void quit(Commands &commands, const Command &cmd);
+  void quit(Commands &commands, const Command &cmd);
+  void kick(Commands &commands, const Command &cmd);
   void pass(Commands &commands, const Command &cmd);
+  void invite(Commands &commands, const Command &cmd);
+  void topic(Commands &commands, const Command &cmd);
   void mode(Commands &commands, const Command &cmd);
-  // void kick(Commands &commands, const Command &cmd);
+  void unknown(Commands &commands, const Command &cmd);
 
   void broadcast_message(const std::string &msg, int sender_fd);
   void broadcast_nickname_change(int sender_fd, const std::string &old_nick, const std::string &new_nick);
