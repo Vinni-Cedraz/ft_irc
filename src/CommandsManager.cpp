@@ -6,10 +6,33 @@
 
 CommandsManager::CommandsManager(Server &server) : server(server) {}
 
+bool CommandsManager::requiresRegistration(CommandType type) {
+    switch (type) {
+        case PRIVMSG:
+        case JOIN:
+        case QUIT:
+        case KICK:
+        case INVITE:
+        case TOPIC:
+        case MODE:
+            return true;
+        default:
+            return false; 
+    }
+}
+
 void CommandsManager::execute(Commands &commands) {
+    Client &sender = commands.get_sender();
     const std::list<Command>& cmd_list = commands.get_list();
+
     for (std::list<Command>::const_iterator it = cmd_list.begin(); it != cmd_list.end(); ++it) {
         const Command &cmd = *it;
+        if (requiresRegistration(cmd.type) &&
+            (!sender.is_authenticated() || sender.get_nickname().empty() || sender.get_username().empty())) {
+            server.send_message(sender.get_fd(), ERR_NOTREGISTERED());
+            continue;
+        }
+
         switch (cmd.type) {
             case PRIVMSG:
                 privmsg(commands, cmd);
