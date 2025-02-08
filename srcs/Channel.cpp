@@ -170,3 +170,11 @@ size_t Channel::getCurrentMembersCount() const {
 bool Channel::getUserLimit() const {
 	return _userLimit.limit;
 };
+
+void Channel::send_channel_message(const std::string &message) {
+	for (std::map<int, Client*>::iterator it = _members.begin(); it != _members.end(); it++) {
+		if (send(it->second->get_fd(), message.c_str(), message.length(), 0) == -1) {
+		  std::cerr << "Error sending message to client " << it->second->get_fd() << std::endl;
+		}
+	}
+}

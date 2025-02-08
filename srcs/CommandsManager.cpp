@@ -15,7 +15,7 @@ void CommandsManager::execute(Commands &commands) {
                 // privmsg(commands, cmd);
                 break;
             case JOIN:
-                // join(commands, cmd);
+                join(commands, cmd);
                 break;
             case NICK:
                 nick(commands, cmd);
@@ -98,11 +98,14 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
 
 void CommandsManager::join(Commands &commands, const Command &cmd) {
     Channel* channel;
-    Client sender = commands.get_sender();
-    
+    Client& sender = commands.get_sender();
+
+    if (cmd.parameters.size() < 1) {
+        server.send_message(sender.get_fd(), ERR_NEEDMOREPARAMS(cmd.command + " " + cmd.params));
+        return ;
+    }    
     if (!server.checkForChannel(cmd.parameters[0])) {
-        server.addNewChannel(new Channel(cmd.parameters[0], commands.get_sender()));
-        // verify channel setting:
+        server.addNewChannel(new Channel(cmd.parameters[0], &sender));
     } else {
         channel = server._channels[cmd.parameters[0]];
     }
@@ -110,38 +113,27 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
     // if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
         
     // }
-
     if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
         channel->addMember(&commands.get_sender());     
     } else {
         server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
+        return ;
     }
 
     if (channel->checkChannelModes('i')) {
         if (check_invite(sender, channel)) {
-            
-            // A JOIN message with the client as the message <source>
-            // and the channel they have joined as the first parameter of the message.
-            // (DO WE NEED A MSG QUEUE?)
-
-            
-            // The channel’s topic (with RPL_TOPIC (332) and optionally RPL_TOPICWHOTIME (333)),
-            // and no message if the channel does not have a topic.
-            if (!cmd.parameters[0]._topic.empty()) {
-                // RPL_TOPIC (332);
+            channel->send_channel_message(JOIN(sender.get_username(), channel->getName()));
+            if (!channel->getTopic().empty()) {
+                channel->send_channel_message(RPL_TOPIC(sender.get_nickname(), channel->getName(), channel->getTopic()));
             }
-                        
+            for (std::map<int, Client*>::iterator it = channel->_members.begin(); it != channel->_members.end(); it++) {
+                server.send_message(sender.get_fd(), RPL_NAMREPLY(it->second->get_nickname(), channel->getName(), it->second->get_nickname())); 
+            }
             // A list of users currently joined to the channel (with one or more RPL_NAMREPLY (353)
             // numerics followed by a single RPL_ENDOFNAMES (366) numeric). These RPL_NAMREPLY
             // messages sent by the server MUST include the requesting client that has just joined the channel.
-            for (channel._members::iterator....) {
-                // RPL_NAMREPLY (353);
-                // RPL_ENDOFNAMES (366);
-            }
-
+            server.send_message(sender.get_fd(), RPL_ENDOFNAMES(sender.get_nickname(), channel->getName()));
         }
-    } else if (nbr of params) {
-        
     } else if (if the channel has key, does the matches the channel key?) {
         
     }

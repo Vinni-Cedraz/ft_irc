@@ -71,4 +71,6 @@ class Channel {
 
 		//validation
 		bool parseChannelName(const std::string& name) const;
+		void send_channel_message(const std::string &message);
+
 };
