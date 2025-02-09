@@ -7,6 +7,8 @@
 #include <string>
 
 class Server;
+class Client;
+class Channel;
 
 struct Invites
 {

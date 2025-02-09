@@ -3,8 +3,15 @@
 #include "CommandsManager.hpp"
 #include "ft_irc.h"
 #include <iostream>
+#include <vector>
+#include <map>
 
 CommandsManager::CommandsManager(Server &server) : server(server) {}
+
+struct ChannelKey {
+	std::string channel_name;
+	std::string key;
+}
 
 void CommandsManager::execute(Commands &commands) {
     const std::list<Command>& cmd_list = commands.get_list();
@@ -95,6 +102,28 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
     update_user_info(client, username, realname);
     send_welcome_messages(client);
 }
+	
+std::vector<ChannelKey> generateChannelKeys(const Command &cmd) {
+	std::vector<ChannelKey> result;
+	std::vector<std::string> channel_name;
+	std::vector<std::string> channel_key;
+
+	for (std::vector<std::string>::iterator it = cmd.parameters.begin(); it != cmd.parameters.end(); it++) {
+		if ((*it)[0]-> == '&' || (*it)[0] == '#') {
+			channel_name.push_back(*it);
+		}
+		else {
+			channel_key.push_back(*it);
+		}
+	}
+	// MAYBE THE FOLLOWING GENERATES A SEGFAULT
+	for (int i = 0; i < channel_name.size(); i++) {
+		ChannelKey temp = {channel_name[i], channel_key[i]};
+		result.push_back(temp);
+	}
+	return result;
+}
+
 
 void CommandsManager::join(Commands &commands, const Command &cmd) {
     Channel* channel;
@@ -103,13 +132,13 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
     if (cmd.parameters.size() < 1) {
         server.send_message(sender.get_fd(), ERR_NEEDMOREPARAMS(cmd.command + " " + cmd.params));
         return ;
-    }    
+    }
     if (!server.checkForChannel(cmd.parameters[0])) {
         server.addNewChannel(new Channel(cmd.parameters[0], &sender));
     } else {
         channel = server._channels[cmd.parameters[0]];
     }
-    //need to transfer this to the MODe function
+    //need to transfer this to the MODE function
     // if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
         
     // }
@@ -126,18 +155,21 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
             if (!channel->getTopic().empty()) {
                 channel->send_channel_message(RPL_TOPIC(sender.get_nickname(), channel->getName(), channel->getTopic()));
             }
+            // GOT TO VALID THIS, NOT SURE IF THIS IS THE CORRECT BEHAVIOUR
+			// A list of users currently joined to the channel (with one or more RPL_NAMREPLY (353)
+            // numerics followed by a single RPL_ENDOFNAMES (366) numeric). These RPL_NAMREPLY
+            // messages sent by the server MUST include the requesting client that has just joined the channel.
             for (std::map<int, Client*>::iterator it = channel->_members.begin(); it != channel->_members.end(); it++) {
                 server.send_message(sender.get_fd(), RPL_NAMREPLY(it->second->get_nickname(), channel->getName(), it->second->get_nickname())); 
             }
-            // A list of users currently joined to the channel (with one or more RPL_NAMREPLY (353)
-            // numerics followed by a single RPL_ENDOFNAMES (366) numeric). These RPL_NAMREPLY
-            // messages sent by the server MUST include the requesting client that has just joined the channel.
             server.send_message(sender.get_fd(), RPL_ENDOFNAMES(sender.get_nickname(), channel->getName()));
         }
-    } else if (if the channel has key, does the matches the channel key?) {
-        
     }
-    else {
+	// NEED TO MAKE THE PARSER TO MAKE A KEY/VALUE RELATION IN CASE OF A 'K' IS ENABLE
+	if (channel->checkChannelModes('k') && cmd.paramaters[1]) {
+		
+	}
+	else {
         server._channels[cmd.parameters[0]]->addMember(&commands.get_sender());
     }
 };
