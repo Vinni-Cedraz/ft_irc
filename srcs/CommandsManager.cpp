@@ -11,7 +11,7 @@ CommandsManager::CommandsManager(Server &server) : server(server) {}
 struct ChannelKey {
 	std::string channel_name;
 	std::string key;
-}
+};
 
 void CommandsManager::execute(Commands &commands) {
     const std::list<Command>& cmd_list = commands.get_list();
@@ -108,8 +108,8 @@ std::vector<ChannelKey> generateChannelKeys(const Command &cmd) {
 	std::vector<std::string> channel_name;
 	std::vector<std::string> channel_key;
 
-	for (std::vector<std::string>::iterator it = cmd.parameters.begin(); it != cmd.parameters.end(); it++) {
-		if ((*it)[0]-> == '&' || (*it)[0] == '#') {
+	for (std::vector<std::string>::const_iterator it = cmd.parameters.begin(); it != cmd.parameters.end(); it++) {
+		if ((*it)[0] == '&' || (*it)[0] == '#') {
 			channel_name.push_back(*it);
 		}
 		else {
@@ -117,7 +117,7 @@ std::vector<ChannelKey> generateChannelKeys(const Command &cmd) {
 		}
 	}
 	// MAYBE THE FOLLOWING GENERATES A SEGFAULT
-	for (int i = 0; i < channel_name.size(); i++) {
+	for (size_t i = 0; i < channel_name.size(); i++) {
 		ChannelKey temp = {channel_name[i], channel_key[i]};
 		result.push_back(temp);
 	}
@@ -126,7 +126,7 @@ std::vector<ChannelKey> generateChannelKeys(const Command &cmd) {
 
 
 void CommandsManager::join(Commands &commands, const Command &cmd) {
-    Channel* channel;
+    Channel* channel = NULL;
     Client& sender = commands.get_sender();
 
     if (cmd.parameters.size() < 1) {
@@ -151,7 +151,7 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
 
     if (channel->checkChannelModes('i')) {
         if (check_invite(sender, channel)) {
-            channel->send_channel_message(JOIN(sender.get_username(), channel->getName()));
+            channel->send_channel_message(RPL_JOIN(sender.get_username(), channel->getName()));
             if (!channel->getTopic().empty()) {
                 channel->send_channel_message(RPL_TOPIC(sender.get_nickname(), channel->getName(), channel->getTopic()));
             }
@@ -166,7 +166,7 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
         }
     }
 	// NEED TO MAKE THE PARSER TO MAKE A KEY/VALUE RELATION IN CASE OF A 'K' IS ENABLE
-	if (channel->checkChannelModes('k') && cmd.paramaters[1]) {
+	if (channel->checkChannelModes('k') && !cmd.parameters[1].empty()) {
 		
 	}
 	else {

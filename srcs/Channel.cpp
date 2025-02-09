@@ -2,6 +2,7 @@
 #include "ft_irc.h"
 #include <map>
 #include <ctype.h>
+#include "Server.hpp"
 
 Channel::Channel(const std::string& name, Client* creator) : _name(name) {
 	std::string	input;
@@ -18,6 +19,7 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name) {
 		return ;
 	}
 	
+	this->_userLimit.limit = false;
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	creator->getServer()->addNewChannel(this);

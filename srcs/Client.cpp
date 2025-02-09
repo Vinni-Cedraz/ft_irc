@@ -58,7 +58,7 @@ bool Client::inviteMember(Client* target, Channel* channel) {
     }
   }
   _server->send_message(this->_fd ,RPL_INVITING(this->_nick, target->get_nickname(), channel->getName())); 
-  _server->send_message(target->get_fd(), INVITE(this->_nick, this->_user, target->get_nickname(), channel->getName()));
+  _server->send_message(target->get_fd(), RPL_INVITE(this->_nick, this->_user, target->get_nickname(), channel->getName()));
 	return true;
 }
 

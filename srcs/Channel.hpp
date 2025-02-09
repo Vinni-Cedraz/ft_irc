@@ -3,9 +3,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <cstdlib>
-#include <iostream>
 #include <map>
-#include "Server.hpp"
 #include "Client.hpp"
 
 #include <string>
@@ -13,7 +11,7 @@
 class Server;
 
 struct UserLimit {
-	bool limited = false;
+	bool limited;
 	size_t limit;
 };
 
