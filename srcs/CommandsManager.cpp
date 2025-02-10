@@ -9,7 +9,7 @@
 CommandsManager::CommandsManager(Server &server) : server(server) {}
 
 struct ChannelKey {
-	std::string channel_name;
+	Channel* channel;
 	std::string key;
 };
 
@@ -128,6 +128,12 @@ std::vector<ChannelKey> generateChannelKeys(const Command &cmd) {
 void CommandsManager::join(Commands &commands, const Command &cmd) {
     Channel* channel = NULL;
     Client& sender = commands.get_sender();
+	std::vector<ChannelKey> channel_keys = generateChannelKeys(cmd);
+
+	for (std::vector<ChannelKey>::iterator it = channel_keys.begin(); it != channel_keys.end(); it++) {
+
+		
+	}
 
     if (cmd.parameters.size() < 1) {
         server.send_message(sender.get_fd(), ERR_NEEDMOREPARAMS(cmd.command + " " + cmd.params));
@@ -166,12 +172,16 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
         }
     }
 	// NEED TO MAKE THE PARSER TO MAKE A KEY/VALUE RELATION IN CASE OF A 'K' IS ENABLE
+<<<<<<< HEAD
 	if (channel->checkChannelModes('k') && !cmd.parameters[1].empty()) {
 		
+=======
+	if (channel->checkChannelModes('k')) {
+		channel_keys =  generateChannelKeys(cmd);
+
+		}
+>>>>>>> wip
 	}
-	else {
-        server._channels[cmd.parameters[0]]->addMember(&commands.get_sender());
-    }
 };
 
 // void CommandsManager::quit(Commands &commands, const Command &cmd) {
