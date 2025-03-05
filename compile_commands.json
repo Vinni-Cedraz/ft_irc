@@ -1,0 +1,420 @@
+[
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/main.cpp",
+   "-o",
+   "objects/main.o"
+  ],
+  "file": "src/main.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Client.cpp",
+   "-o",
+   "objects/Client.o"
+  ],
+  "file": "src/Client.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Commands.cpp",
+   "-o",
+   "objects/Commands.o"
+  ],
+  "file": "src/Commands.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/CommandsManager.cpp",
+   "-o",
+   "objects/CommandsManager.o"
+  ],
+  "file": "src/CommandsManager.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Server.cpp",
+   "-o",
+   "objects/Server.o"
+  ],
+  "file": "src/Server.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/SocketsManager.cpp",
+   "-o",
+   "objects/SocketsManager.o"
+  ],
+  "file": "src/SocketsManager.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Channel.cpp",
+   "-o",
+   "objects/Channel.o"
+  ],
+  "file": "src/Channel.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/invite.cpp",
+   "-o",
+   "objects/invite.o"
+  ],
+  "file": "src/commands/invite.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/join.cpp",
+   "-o",
+   "objects/join.o"
+  ],
+  "file": "src/commands/join.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/kick.cpp",
+   "-o",
+   "objects/kick.o"
+  ],
+  "file": "src/commands/kick.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/mode.cpp",
+   "-o",
+   "objects/mode.o"
+  ],
+  "file": "src/commands/mode.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/nick.cpp",
+   "-o",
+   "objects/nick.o"
+  ],
+  "file": "src/commands/nick.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/pass.cpp",
+   "-o",
+   "objects/pass.o"
+  ],
+  "file": "src/commands/pass.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/privmsg.cpp",
+   "-o",
+   "objects/privmsg.o"
+  ],
+  "file": "src/commands/privmsg.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/quit.cpp",
+   "-o",
+   "objects/quit.o"
+  ],
+  "file": "src/commands/quit.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/topic.cpp",
+   "-o",
+   "objects/topic.o"
+  ],
+  "file": "src/commands/topic.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/user.cpp",
+   "-o",
+   "objects/user.o"
+  ],
+  "file": "src/commands/user.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/who.cpp",
+   "-o",
+   "objects/who.o"
+  ],
+  "file": "src/commands/who.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/commands/part.cpp",
+   "-o",
+   "objects/part.o"
+  ],
+  "file": "src/commands/part.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/utils/Validator.cpp",
+   "-o",
+   "objects/Validator.o"
+  ],
+  "file": "src/utils/Validator.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/utils/Logger.cpp",
+   "-o",
+   "objects/Logger.o"
+  ],
+  "file": "src/utils/Logger.cpp"
+ },
+ {
+  "directory": "/home/vcedraz/SoftwareProjects/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I./include",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/utils/utils.cpp",
+   "-o",
+   "objects/utils.o"
+  ],
+  "file": "src/utils/utils.cpp"
+ }
+]
